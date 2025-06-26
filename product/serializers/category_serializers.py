@@ -4,5 +4,5 @@ from product.models import Category
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
-        modo = Category
+        model = Category
         fields = "__all__"
