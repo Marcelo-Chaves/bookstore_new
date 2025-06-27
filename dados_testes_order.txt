@@ -7,3 +7,30 @@ price: 20.00
 status: pending
 Status HTTP: 201
 ----------------------------------------
+== Novo Pedido Criado ==
+customer_name: marcelo chaves
+email: marcelo.chaves@gmail.com
+product_name: livros
+quantity: 100
+price: 20.00
+status: pending
+Status HTTP: 201
+----------------------------------------
+== Novo Pedido Criado ==
+customer_name: marcelo chaves
+email: marcelo.chaves@gmail.com
+product_name: livros
+quantity: 100
+price: 20.00
+status: pending
+Status HTTP: 201
+----------------------------------------
+== Novo Pedido Criado ==
+customer_name: ana silva
+email: ana.silva@gmail.com
+product_name: cadernos
+quantity: 50
+price: 10.00
+status: pending
+Status HTTP: 201
+----------------------------------------
