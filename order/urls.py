@@ -1,11 +1,10 @@
-#agora é para colocar no product/urls.py
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from order.views import OrderViewSet
+from order.views.order_views import OrderViewSet
 
 router = DefaultRouter()
-router.register(r'orders', OrderViewSet,basename='Order')
+router.register(r'orders', OrderViewSet, basename='order')
 
-urlpatterns =[
-    path('', include(router.urls))
+urlpatterns = [
+    path('', include(router.urls)),
 ]

@@ -4,7 +4,6 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from product.models.category import Category
-from product.models.product import Product
 from product.permissions.custom import IsManagerOrReadOnly
 
 # ------------------------
@@ -39,23 +38,22 @@ def auth_client():
 def category(db, staff_user):
     return Category.objects.create(name="Categoria Teste", description="Descrição")
 
-@pytest.fixture
-def product(db, staff_user, category):
-    return Product.objects.create(
-        name="Produto Teste",
-        description="Descrição Produto",
-        price=10.0,
-        category=category
-    )
-
 # ------------------------
-# CRUD tests
+# Permission tests
 # ------------------------
 @pytest.mark.django_db
-def test_create_category(auth_client, staff_user):
+def test_create_category_denied_for_regular_user(auth_client, regular_user):
+    client = auth_client(regular_user)
+    url = reverse("category-list")
+    data = {"name": "Categoria Bloqueada", "description": "Não permitido"}
+    response = client.post(url, data, format="json")
+    assert response.status_code == 403
+
+@pytest.mark.django_db
+def test_create_category_allowed_for_staff(auth_client, staff_user):
     client = auth_client(staff_user)
     url = reverse("category-list")
-    data = {"name": "Nova Categoria", "description": "Descrição"}
+    data = {"name": "Categoria Permitida", "description": "Permitido"}
     response = client.post(url, data, format="json")
     assert response.status_code == 201
-    assert Category.objects.filter(name="Nova Categoria").exists()
+    assert Category.objects.filter(name="Categoria Permitida").exists()

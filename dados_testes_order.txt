@@ -34,3 +34,533 @@ price: 10.00
 status: pending
 Status HTTP: 201
 ----------------------------------------
+== POST - CRIAR PEDIDO ==
+customer_name: Marcelo Chaves
+email: marcelo.chaves@gmail.com
+product_name: Livros
+quantity: 100
+price: 20.00
+status: pending
+Status HTTP: 401
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+product_name: Caneta Azul
+quantity: 15
+price: 7.00
+status: confirmed
+Status HTTP: 401
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 401
+----------------------------------------
+== POST - CRIAR PEDIDO ==
+customer_name: Marcelo Chaves
+email: marcelo.chaves@gmail.com
+product_name: Livros
+quantity: 100
+price: 20.00
+status: pending
+Status HTTP: 401
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+product_name: Caneta Azul
+quantity: 15
+price: 7.00
+status: confirmed
+Status HTTP: 401
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 401
+----------------------------------------
+== POST - CRIAR PEDIDO ==
+customer_name: Marcelo Chaves
+email: marcelo.chaves@gmail.com
+product_name: Livros
+quantity: 100
+price: 20.00
+status: pending
+Status HTTP: 401
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+product_name: Caneta Azul
+quantity: 15
+price: 7.00
+status: confirmed
+Status HTTP: 401
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 401
+----------------------------------------
+== POST - CRIAR PEDIDO ==
+customer_name: Marcelo Chaves
+email: marcelo.chaves@gmail.com
+product_name: Livros
+quantity: 100
+price: 20.00
+status: pending
+Status HTTP: 401
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+product_name: Caneta Azul
+quantity: 15
+price: 7.00
+status: confirmed
+Status HTTP: 401
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 401
+----------------------------------------
+== POST - CRIAR PEDIDO ==
+customer_name: Marcelo Chaves
+email: marcelo.chaves@gmail.com
+product_name: Livros
+quantity: 100
+price: 20.00
+status: pending
+Status HTTP: 401
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+product_name: Caneta Azul
+quantity: 15
+price: 7.00
+status: confirmed
+Status HTTP: 401
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 401
+----------------------------------------
+== POST - CRIAR PEDIDO ==
+customer_name: Marcelo Chaves
+email: marcelo.chaves@gmail.com
+product_name: Livros
+quantity: 100
+price: 20.00
+status: pending
+Status HTTP: 201
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+product_name: Caneta Azul
+quantity: 15
+price: 7.00
+status: confirmed
+Status HTTP: 400
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 204
+----------------------------------------
+== POST - CRIAR PEDIDO ==
+customer_name: Marcelo Chaves
+email: marcelo.chaves@gmail.com
+product_name: Livros
+quantity: 100
+price: 20.00
+status: pending
+Status HTTP: 201
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+product_name: Caneta Azul
+quantity: 15
+price: 7.00
+status: confirmed
+Status HTTP: 400
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 204
+----------------------------------------
+== POST - CRIAR PEDIDO ==
+customer_name: Marcelo Chaves
+email: marcelo.chaves@gmail.com
+product_name: Livros
+quantity: 100
+price: 20.00
+status: pending
+Status HTTP: 201
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+product_name: Caneta Azul
+quantity: 15
+price: 7.00
+status: confirmed
+Status HTTP: 400
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 204
+----------------------------------------
+== POST - CRIAR PEDIDO ==
+customer_name: Marcelo Chaves
+email: marcelo.chaves@gmail.com
+product_name: Livros
+quantity: 100
+price: 20.00
+status: pending
+Status HTTP: 201
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+product_name: Caneta Azul
+quantity: 15
+price: 7.00
+status: confirmed
+Status HTTP: 400
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 204
+----------------------------------------
+== POST - CRIAR PEDIDO ==
+customer_name: Marcelo Chaves
+email: marcelo.chaves@gmail.com
+product_name: Livros
+quantity: 100
+price: 20.00
+status: pending
+Status HTTP: 201
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+product_name: Caneta Azul
+quantity: 15
+price: 7.00
+status: confirmed
+Status HTTP: 400
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 204
+----------------------------------------
+== POST - CRIAR PEDIDO ==
+customer_name: Marcelo Chaves
+email: marcelo.chaves@gmail.com
+product_name: Livros
+quantity: 100
+price: 20.00
+status: pending
+Status HTTP: 201
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+product_name: Caneta Azul
+quantity: 15
+price: 7.00
+status: confirmed
+Status HTTP: 400
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 204
+----------------------------------------
+== POST - CRIAR PEDIDO ==
+customer_name: Marcelo Chaves
+email: marcelo.chaves@gmail.com
+product_name: Livros
+quantity: 100
+price: 20.00
+status: pending
+Status HTTP: 201
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+product_name: Caneta Azul
+quantity: 15
+price: 7.00
+status: confirmed
+Status HTTP: 400
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 204
+----------------------------------------
+== POST - CRIAR PEDIDO ==
+customer_name: Marcelo Chaves
+email: marcelo.chaves@gmail.com
+product_name: Livros
+quantity: 100
+price: 20.00
+status: pending
+Status HTTP: 201
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+quantity: 15
+price: 7.00
+status: confirmed
+Status HTTP: 400
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 204
+----------------------------------------
+== POST - CRIAR PEDIDO ==
+customer_name: Marcelo Chaves
+email: marcelo.chaves@gmail.com
+product_name: Livros
+quantity: 100
+price: 20.00
+status: pending
+Status HTTP: 201
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+quantity: 15
+price: 7.00
+status: confirmed
+Status HTTP: 400
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 204
+----------------------------------------
+== POST - CRIAR PEDIDO ==
+customer_name: Marcelo Chaves
+email: marcelo.chaves@gmail.com
+product_name: Livros
+quantity: 100
+price: 20.00
+status: pending
+Status HTTP: 201
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+quantity: 15
+status: confirmed
+Status HTTP: 400
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 204
+----------------------------------------
+== POST - CRIAR PEDIDO ==
+customer_name: Marcelo Chaves
+email: marcelo.chaves@gmail.com
+product_name: Livros
+quantity: 100
+price: 20.00
+status: pending
+Status HTTP: 201
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+quantity: 15
+status: confirmed
+Status HTTP: 400
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 204
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+quantity: 15
+status: confirmed
+Status HTTP: 400
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 204
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+quantity: 15
+status: confirmed
+Status HTTP: 400
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 204
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+product_name: Caneta
+quantity: 15
+price: 5.00
+status: confirmed
+Status HTTP: 400
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 204
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+product_name: Caneta
+quantity: 15
+price: 5.00
+status: confirmed
+Status HTTP: 400
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 204
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+product_name: Caneta
+quantity: 15
+price: 5.00
+status: confirmed
+Status HTTP: 400
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 204
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+product_name: Caneta
+quantity: 15
+price: 5.00
+status: confirmed
+Status HTTP: 400
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 204
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+product_name: Caneta
+quantity: 15
+price: 5.00
+status: confirmed
+Status HTTP: 400
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 204
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+product_name: Caneta
+quantity: 15
+price: 5.00
+status: confirmed
+Status HTTP: 400
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 204
+----------------------------------------
+== GET - LISTAR PEDIDOS ==
+Status HTTP: 200
+----------------------------------------
+== PUT - ATUALIZAR PEDIDO ==
+customer_name: João Silva Atualizado
+email: joao.silva@gmail.com
+product_name: Caneta
+quantity: 15
+price: 5.00
+status: confirmed
+Status HTTP: 400
+----------------------------------------
+== DELETE - REMOVER PEDIDO ==
+id: 1
+Status HTTP: 204
+----------------------------------------
