@@ -1,8 +1,7 @@
-# Próximo passo é inserir os códigos no product/serializers/product_serializers.py
 from rest_framework import serializers
-from product.models import Category
+from product.models.category import Category
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = "__all__"
+        fields = ['id', 'name', 'description', 'created_at', 'updated_at']

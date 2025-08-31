@@ -1,15 +1,9 @@
 import pytest
 from rest_framework.test import APIClient
-from django.urls import reverse
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
-from product.models.category import Category
-from product.models.product import Product
-from product.permissions.custom import IsManagerOrReadOnly
+from product.models import Category, Product
 
-# ------------------------
-# Fixtures
-# ------------------------
 @pytest.fixture
 def client():
     return APIClient()
@@ -28,6 +22,7 @@ def staff_user(db):
 
 @pytest.fixture
 def auth_client():
+    """Retorna um client autenticado para o usuário fornecido"""
     def _auth_client(user):
         client = APIClient()
         token, _ = Token.objects.get_or_create(user=user)
@@ -36,26 +31,16 @@ def auth_client():
     return _auth_client
 
 @pytest.fixture
-def category(db, staff_user):
-    return Category.objects.create(name="Categoria Teste", description="Descrição")
+def category(db):
+    return Category.objects.create(name="Categoria Teste")
 
 @pytest.fixture
-def product(db, staff_user, category):
+def product(db, category):
     return Product.objects.create(
         name="Produto Teste",
-        description="Descrição Produto",
-        price=10.0,
+        description="Descrição teste",
+        price=100.0,
+        stock=20,
+        is_active=True,
         category=category
     )
-
-# ------------------------
-# CRUD tests
-# ------------------------
-@pytest.mark.django_db
-def test_create_category(auth_client, staff_user):
-    client = auth_client(staff_user)
-    url = reverse("category-list")
-    data = {"name": "Nova Categoria", "description": "Descrição"}
-    response = client.post(url, data, format="json")
-    assert response.status_code == 201
-    assert Category.objects.filter(name="Nova Categoria").exists()

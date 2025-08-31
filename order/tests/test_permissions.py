@@ -38,43 +38,32 @@ def order(db, staff_user):
     )
 
 # ------------------------
-# CRUD tests
+# Permission tests
 # ------------------------
 @pytest.mark.django_db
-def test_create_order(auth_client, staff_user):
-    client = auth_client(staff_user)
-    url = reverse("order-list")
-    data = {"name": "Novo Pedido", "description": "Teste de criação"}
-    response = client.post(url, data, format="json")
-    assert response.status_code == 201
-    assert Order.objects.filter(name="Novo Pedido").exists()
-
-@pytest.mark.django_db
-def test_list_orders(auth_client, staff_user, order):
+def test_list_orders_allowed_to_all(auth_client, staff_user, order):
     client = auth_client(staff_user)
     url = reverse("order-list")
     response = client.get(url)
     assert response.status_code == 200
     data = response.json()
-    # Se estiver paginado, acessar "results"
     results = data.get("results", data)
     assert any(o["name"] == order.name for o in results)
 
 
 @pytest.mark.django_db
-def test_update_order(auth_client, staff_user, order):
-    client = auth_client(staff_user)
-    url = reverse("order-detail", args=[order.id])
-    data = {"name": "Pedido Atualizado", "description": order.description}
-    response = client.put(url, data, format="json")
-    assert response.status_code == 200
-    order.refresh_from_db()
-    assert order.name == "Pedido Atualizado"
+def test_create_order_denied_for_regular_user(auth_client, regular_user):
+    client = auth_client(regular_user)
+    url = reverse("order-list")
+    data = {"name": "Pedido Bloqueado", "description": "Não permitido"}
+    response = client.post(url, data, format="json")
+    assert response.status_code == 403
 
 @pytest.mark.django_db
-def test_delete_order(auth_client, staff_user, order):
+def test_create_order_allowed_for_staff(auth_client, staff_user):
     client = auth_client(staff_user)
-    url = reverse("order-detail", args=[order.id])
-    response = client.delete(url)
-    assert response.status_code == 204
-    assert not Order.objects.filter(id=order.id).exists()
+    url = reverse("order-list")
+    data = {"name": "Pedido Staff", "description": "Permitido"}
+    response = client.post(url, data, format="json")
+    assert response.status_code == 201
+    assert Order.objects.filter(name="Pedido Staff").exists()

@@ -1,10 +1,8 @@
-# o próximo passo é inserir os códigos no product/serializers/category_serializers.py
-from itsdangerous import Serializer
 from rest_framework import serializers
-from order.models import Order
+from order.models.order import Order
 
-class OrderSerializer(serializers.ModelSerializer ):
+class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = "__all__"
-
+        fields = ["id", "name", "description", "created_by", "created_at", "updated_at"]
+        read_only_fields = ["created_by", "created_at", "updated_at"]
