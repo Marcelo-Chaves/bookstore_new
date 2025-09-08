@@ -1,59 +1,58 @@
 import pytest
-from rest_framework.test import APIClient
-from django.urls import reverse
 from django.contrib.auth.models import User
-from rest_framework.authtoken.models import Token
-from product.models.category import Category
-from product.permissions.custom import IsManagerOrReadOnly
-
-# ------------------------
-# Fixtures
-# ------------------------
-@pytest.fixture
-def client():
-    return APIClient()
-
-@pytest.fixture
-def regular_user(db):
-    user = User.objects.create_user(username="user", password="pass")
-    Token.objects.create(user=user)
-    return user
-
-@pytest.fixture
-def staff_user(db):
-    user = User.objects.create_user(username="staff", password="pass", is_staff=True)
-    Token.objects.create(user=user)
-    return user
-
-@pytest.fixture
-def auth_client():
-    def _auth_client(user):
-        client = APIClient()
-        token, _ = Token.objects.get_or_create(user=user)
-        client.credentials(HTTP_AUTHORIZATION=f"Token {token.key}")
-        return client
-    return _auth_client
-
-@pytest.fixture
-def category(db, staff_user):
-    return Category.objects.create(name="Categoria Teste", description="Descrição")
-
-# ------------------------
-# Permission tests
-# ------------------------
-@pytest.mark.django_db
-def test_create_category_denied_for_regular_user(auth_client, regular_user):
-    client = auth_client(regular_user)
-    url = reverse("category-list")
-    data = {"name": "Categoria Bloqueada", "description": "Não permitido"}
-    response = client.post(url, data, format="json")
-    assert response.status_code == 403
+from product.models import Category, Product
 
 @pytest.mark.django_db
-def test_create_category_allowed_for_staff(auth_client, staff_user):
-    client = auth_client(staff_user)
-    url = reverse("category-list")
-    data = {"name": "Categoria Permitida", "description": "Permitido"}
-    response = client.post(url, data, format="json")
-    assert response.status_code == 201
-    assert Category.objects.filter(name="Categoria Permitida").exists()
+class TestProductPermissions:
+
+    def setup_method(self):
+        from rest_framework.test import APIClient
+        self.client = APIClient()
+        self.regular_user = User.objects.create_user(username="regular", password="1234")
+        self.staff_user = User.objects.create_user(username="staff", password="1234", is_staff=True)
+        self.category = Category.objects.create(name="Cat Teste", description="Descrição")
+        self.product = Product.objects.create(
+            name="Prod Teste",
+            description="Desc",
+            price=10.0,
+            stock=5,
+            category=self.category
+        )
+        self.url_categories = "/api/product/categories/"
+        self.url_products = "/api/product/products/"
+
+    # Category
+    def test_category_create_denied_for_regular_user(self):
+        self.client.force_authenticate(user=self.regular_user)
+        response = self.client.post(self.url_categories, {"name": "Nova", "description": "Desc"})
+        assert response.status_code == 403
+
+    def test_category_create_allowed_for_staff(self):
+        self.client.force_authenticate(user=self.staff_user)
+        response = self.client.post(self.url_categories, {"name": "Nova", "description": "Desc"})
+        assert response.status_code == 201
+
+    def test_category_list_is_public(self):
+        response = self.client.get(self.url_categories)
+        assert response.status_code == 200
+
+    # Product
+    def test_product_create_denied_for_regular_user(self):
+        self.client.force_authenticate(user=self.regular_user)
+        response = self.client.post(
+            self.url_products,
+            {"name": "Produto Novo", "description": "Desc", "price": 5.0, "category": self.category.id}
+        )
+        assert response.status_code == 403
+
+    def test_product_create_allowed_for_staff(self):
+        self.client.force_authenticate(user=self.staff_user)
+        response = self.client.post(
+            self.url_products,
+            {"name": "Produto Novo", "description": "Desc", "price": 5.0, "category": self.category.id}
+        )
+        assert response.status_code == 201
+
+    def test_product_list_is_public(self):
+        response = self.client.get(self.url_products)
+        assert response.status_code == 200

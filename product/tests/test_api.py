@@ -1,61 +1,136 @@
 import pytest
 from rest_framework.test import APIClient
-from django.urls import reverse
 from django.contrib.auth.models import User
-from rest_framework.authtoken.models import Token
-from product.models.category import Category
-from product.models.product import Product
-from product.permissions.custom import IsManagerOrReadOnly
+from product.models import Category, Product
+from order.models import Order
+from django.urls import reverse
 
-# ------------------------
-# Fixtures
-# ------------------------
-@pytest.fixture
-def client():
-    return APIClient()
 
-@pytest.fixture
-def regular_user(db):
-    user = User.objects.create_user(username="user", password="pass")
-    Token.objects.create(user=user)
-    return user
-
-@pytest.fixture
-def staff_user(db):
-    user = User.objects.create_user(username="staff", password="pass", is_staff=True)
-    Token.objects.create(user=user)
-    return user
-
-@pytest.fixture
-def auth_client():
-    def _auth_client(user):
-        client = APIClient()
-        token, _ = Token.objects.get_or_create(user=user)
-        client.credentials(HTTP_AUTHORIZATION=f"Token {token.key}")
-        return client
-    return _auth_client
-
-@pytest.fixture
-def category(db, staff_user):
-    return Category.objects.create(name="Categoria Teste", description="Descrição")
-
-@pytest.fixture
-def product(db, staff_user, category):
-    return Product.objects.create(
-        name="Produto Teste",
-        description="Descrição Produto",
-        price=10.0,
-        category=category
-    )
-
-# ------------------------
-# CRUD tests
-# ------------------------
 @pytest.mark.django_db
-def test_create_category(auth_client, staff_user):
-    client = auth_client(staff_user)
-    url = reverse("category-list")
-    data = {"name": "Nova Categoria", "description": "Descrição"}
-    response = client.post(url, data, format="json")
-    assert response.status_code == 201
-    assert Category.objects.filter(name="Nova Categoria").exists()
+class TestProductAPI:
+
+    def setup_method(self):
+        self.client = APIClient()
+        # 🔹 Usuários
+        self.user = User.objects.create_user(username="regular", password="1234")
+        self.staff = User.objects.create_user(username="staff", password="1234", is_staff=True)
+
+        # 🔹 Categoria para vincular os produtos
+        self.category = Category.objects.create(name="Categoria Teste")
+
+        # 🔹 Produto padrão
+        self.product = Product.objects.create(
+            name="Produto Teste",
+            description="Descrição",
+            price=20.0,
+            stock=10,
+            category=self.category,
+        )
+
+        self.url_products = "/api/product/products/"
+        self.url_categories = "/api/product/categories/"
+        self.url_orders = "/api/order/orders/"
+
+    # -------------------- CATEGORY --------------------
+
+    def test_create_category(self):
+        """Apenas staff pode criar categorias"""
+        self.client.force_authenticate(user=self.staff)
+        response = self.client.post(self.url_categories, {"name": "Nova Categoria"})
+        assert response.status_code == 201
+        assert Category.objects.filter(name="Nova Categoria").exists()
+
+    def test_list_categories(self):
+        response = self.client.get(self.url_categories)
+        assert response.status_code == 200
+        assert response.data["results"][0]["name"] == self.category.name
+
+    # -------------------- PRODUCT --------------------
+
+    def test_create_product(self):
+        """Apenas staff pode criar produtos"""
+        self.client.force_authenticate(user=self.staff)
+        response = self.client.post(
+            self.url_products,
+            {
+                "name": "Produto Novo",
+                "description": "Novo",
+                "price": 15.5,
+                "stock": 7,
+                "category": self.category.id,
+            },
+        )
+        assert response.status_code == 201
+        assert Product.objects.filter(name="Produto Novo").exists()
+
+    def test_list_products(self):
+        response = self.client.get(self.url_products)
+        assert response.status_code == 200
+        assert response.data["results"][0]["name"] == self.product.name
+
+    # -------------------- ORDER --------------------
+
+    def test_create_order(self):
+        """Usuário autenticado deve conseguir criar pedido"""
+        self.client.force_authenticate(user=self.user)
+        url = reverse("order-list")
+        data = {
+            "name": "Pedido Teste",
+            "product": self.product.id,
+            "quantity": 2
+        }
+        response = self.client.post(url, data, format="json")
+        assert response.status_code == 201
+        assert Order.objects.filter(user=self.user, product=self.product).exists()
+
+    def test_list_orders(self):
+        """Usuário autenticado consegue listar pedidos"""
+        Order.objects.create(
+            user=self.user,
+            product=self.product,
+            quantity=1,
+            name="Pedido Teste",
+            created_by=self.user
+        )
+        self.client.force_authenticate(user=self.user)
+        url = reverse("order-list")
+        response = self.client.get(url)
+        assert response.status_code == 200
+        data = response.json()
+        assert any(o["quantity"] == 1 for o in data.get("results", data))
+
+    def test_update_order(self):
+        """Usuário autenticado pode atualizar pedido"""
+        order = Order.objects.create(
+            user=self.user,
+            product=self.product,
+            quantity=1,
+            name="Pedido Teste",
+            created_by=self.user
+        )
+        self.client.force_authenticate(user=self.user)
+        url = reverse("order-detail", args=[order.id])
+        data = {
+            "name": order.name,
+            "product": self.product.id,
+            "quantity": 5
+        }
+        response = self.client.put(url, data, format="json")
+        assert response.status_code == 200
+        order.refresh_from_db()
+        assert order.quantity == 5
+
+    def test_delete_order(self):
+        """Usuário autenticado pode deletar pedido"""
+        order = Order.objects.create(
+            user=self.user,
+            product=self.product,
+            quantity=1,
+            name="Pedido Teste",
+            created_by=self.user
+        )
+        self.client.force_authenticate(user=self.user)
+        url = reverse("order-detail", args=[order.id])
+        response = self.client.delete(url)
+        assert response.status_code == 204
+        assert not Order.objects.filter(id=order.id).exists()
