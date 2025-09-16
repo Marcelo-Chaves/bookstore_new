@@ -1,3 +1,4 @@
+# product/views/category_views.py
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from product.models.category import Category
@@ -7,4 +8,4 @@ from product.permissions.custom import IsManagerOrReadOnly
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [IsAuthenticatedOrReadOnly, IsManagerOrReadOnly]
+    permission_classes = [ IsManagerOrReadOnly]
