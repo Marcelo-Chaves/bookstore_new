@@ -27,16 +27,16 @@ class TestProductAPI:
             category=self.category,
         )
 
-        self.url_products = "/api/product/products/"
-        self.url_categories = "/api/product/categories/"
+        # 🔹 URLs corretas
+        self.url_products = "/api/products/"
+        self.url_categories = "/api/categories/"
         self.url_orders = "/api/order/orders/"
 
     # -------------------- CATEGORY --------------------
 
     def test_create_category(self):
-        """Apenas staff pode criar categorias"""
         self.client.force_authenticate(user=self.staff)
-        response = self.client.post(self.url_categories, {"name": "Nova Categoria"})
+        response = self.client.post(self.url_categories, {"name": "Nova Categoria"}, format="json")
         assert response.status_code == 201
         assert Category.objects.filter(name="Nova Categoria").exists()
 
@@ -48,7 +48,6 @@ class TestProductAPI:
     # -------------------- PRODUCT --------------------
 
     def test_create_product(self):
-        """Apenas staff pode criar produtos"""
         self.client.force_authenticate(user=self.staff)
         response = self.client.post(
             self.url_products,
@@ -59,6 +58,7 @@ class TestProductAPI:
                 "stock": 7,
                 "category": self.category.id,
             },
+            format="json",
         )
         assert response.status_code == 201
         assert Product.objects.filter(name="Produto Novo").exists()
@@ -71,7 +71,6 @@ class TestProductAPI:
     # -------------------- ORDER --------------------
 
     def test_create_order(self):
-        """Usuário autenticado deve conseguir criar pedido"""
         self.client.force_authenticate(user=self.user)
         url = reverse("order-list")
         data = {
@@ -84,7 +83,6 @@ class TestProductAPI:
         assert Order.objects.filter(user=self.user, product=self.product).exists()
 
     def test_list_orders(self):
-        """Usuário autenticado consegue listar pedidos"""
         Order.objects.create(
             user=self.user,
             product=self.product,
@@ -100,7 +98,6 @@ class TestProductAPI:
         assert any(o["quantity"] == 1 for o in data.get("results", data))
 
     def test_update_order(self):
-        """Usuário autenticado pode atualizar pedido"""
         order = Order.objects.create(
             user=self.user,
             product=self.product,
@@ -121,7 +118,6 @@ class TestProductAPI:
         assert order.quantity == 5
 
     def test_delete_order(self):
-        """Usuário autenticado pode deletar pedido"""
         order = Order.objects.create(
             user=self.user,
             product=self.product,
@@ -134,3 +130,4 @@ class TestProductAPI:
         response = self.client.delete(url)
         assert response.status_code == 204
         assert not Order.objects.filter(id=order.id).exists()
+

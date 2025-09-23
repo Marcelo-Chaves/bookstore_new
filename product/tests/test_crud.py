@@ -1,7 +1,7 @@
 import pytest
 from rest_framework.test import APIClient
 from django.contrib.auth.models import User
-from product.models import Category
+from product.models import Category, Product
 
 
 @pytest.mark.django_db
@@ -9,7 +9,8 @@ class TestProductCRUD:
 
     def setup_method(self):
         self.client = APIClient()
-        self.url = "/api/product/categories/"
+        # URL base correta do router
+        self.url = "/api/categories/"
         self.user = User.objects.create_user(username="regular", password="1234")
         self.staff = User.objects.create_user(username="staff", password="1234", is_staff=True)
 
@@ -21,12 +22,18 @@ class TestProductCRUD:
 
     def test_create_category_denied_for_regular_user(self):
         self.client.force_authenticate(user=self.user)
-        response = self.client.post(self.url, {"name": "Eletrônicos", "description": "Categoria de eletrônicos"})
+        response = self.client.post(
+            self.url,
+            {"name": "Eletrônicos", "description": "Categoria de eletrônicos"}
+        )
         assert response.status_code == 403
 
     def test_create_category_allowed_for_staff(self):
         self.client.force_authenticate(user=self.staff)
-        response = self.client.post(self.url, {"name": "Games", "description": "Categoria de games"})
+        response = self.client.post(
+            self.url,
+            {"name": "Games", "description": "Categoria de games"}
+        )
         assert response.status_code == 201
         assert Category.objects.filter(name="Games").exists()
 
@@ -34,7 +41,10 @@ class TestProductCRUD:
         self.client.force_authenticate(user=self.staff)
         category = Category.objects.create(name="Velho", description="Categoria antiga")
         url_detail = f"{self.url}{category.id}/"
-        response = self.client.put(url_detail, {"name": "Novo", "description": "Categoria atualizada"})
+        response = self.client.put(
+            url_detail,
+            {"name": "Novo", "description": "Categoria atualizada"}
+        )
         assert response.status_code == 200
         category.refresh_from_db()
         assert category.name == "Novo"

@@ -60,16 +60,24 @@ def order(db, staff_user, product):
 
 
 # --------------------------
-# Testes de permissão
+# Testes de permissão ORDER
 # --------------------------
 
 @pytest.mark.django_db
-def test_order_create_denied_for_anonymous():
+def test_order_create_denied_for_anonymous(product):
     client = APIClient()
     url = reverse("order-list")
-    data = {"product": 1, "quantity": 1}  # product será necessário para criar o pedido
+    data = {"product": product.id, "quantity": 1}
     response = client.post(url, data, format="json")
-    assert response.status_code == 401  # Não autenticado
+    assert response.status_code == 401  # Deve exigir autenticação
+
+
+@pytest.mark.django_db
+def test_order_list_denied_for_anonymous(order):
+    client = APIClient()
+    url = reverse("order-list")
+    response = client.get(url)
+    assert response.status_code == 401  # Deve exigir autenticação
 
 
 @pytest.mark.django_db
@@ -84,7 +92,6 @@ def test_order_create_allowed_for_regular_user(auth_client, regular_user, produc
     response = client.post(url, data, format="json")
     assert response.status_code == 201
     assert Order.objects.filter(user=regular_user, product=product).exists()
-
 
 
 @pytest.mark.django_db
@@ -103,13 +110,14 @@ def test_order_create_allowed_for_staff(auth_client, staff_user, product):
     client = auth_client(staff_user)
     url = reverse("order-list")
     data = {
-        "name": "Pedido Staff",  # adicionado
+        "name": "Pedido Staff",
         "product": product.id,
         "quantity": 1
     }
     response = client.post(url, data, format="json")
     assert response.status_code == 201
     assert Order.objects.filter(user=staff_user, product=product).exists()
+
 
 @pytest.mark.django_db
 def test_order_list_allowed_for_staff(auth_client, staff_user, order):
@@ -120,3 +128,29 @@ def test_order_list_allowed_for_staff(auth_client, staff_user, order):
     data = response.json()
     results = data.get("results", data)
     assert any(o["quantity"] == order.quantity for o in results)
+
+
+# --------------------------
+# Testes de acesso público (Product e Category)
+# --------------------------
+
+@pytest.mark.django_db
+def test_category_list_allowed_for_anonymous(category):
+    client = APIClient()
+    url = reverse("category-list")
+    response = client.get(url)
+    assert response.status_code == 200
+    data = response.json()
+    results = data.get("results", data)
+    assert any(c["name"] == category.name for c in results)
+
+
+@pytest.mark.django_db
+def test_product_list_allowed_for_anonymous(product):
+    client = APIClient()
+    url = reverse("product-list")
+    response = client.get(url)
+    assert response.status_code == 200
+    data = response.json()
+    results = data.get("results", data)
+    assert any(p["name"] == product.name for p in results)
