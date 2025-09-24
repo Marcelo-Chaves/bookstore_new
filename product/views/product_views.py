@@ -1,4 +1,4 @@
-#product/views/product_views.py
+# product/views/product_views.py
 from rest_framework import viewsets, permissions
 from product.models import Product, Category
 from product.serializers import ProductSerializer, CategorySerializer
