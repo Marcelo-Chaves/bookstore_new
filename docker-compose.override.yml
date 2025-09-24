@@ -1,0 +1,6 @@
+services:
+  web:
+    environment:
+      - DJANGO_ENV=dev
+    env_file:
+      - ./.env
