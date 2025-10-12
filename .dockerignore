@@ -1,0 +1,32 @@
+# Ignora o ambiente virtual local
+.venv
+venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# Ignora caches e logs
+*.log
+*.pot
+*.mo
+*.swp
+*.swo
+
+# Ignora arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Ignora diretórios de build e IDEs
+.idea
+.vscode
+.envrc
+.git
+.gitignore
+
+# Ignora arquivos de dependências locais e pacotes
+node_modules
+dist
+build
