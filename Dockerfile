@@ -4,7 +4,7 @@ FROM python:3.12-slim
 # Diretório de trabalho
 WORKDIR /app
 
-# Instalar dependências do sistema necessárias para compilar pacotes Python
+# Instalar dependências de sistema necessárias para compilar pacotes Python
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     gcc \
@@ -24,18 +24,31 @@ COPY pyproject.toml poetry.lock* /app/
 RUN pip install --no-cache-dir poetry \
     && poetry config virtualenvs.create false
 
-# Instalar dependências do projeto (sem instalar o próprio pacote, só dependências)
+# Instalar dependências do projeto
 RUN poetry install --with dev --no-root --no-interaction --no-ansi
 
-# Copiar restante do projeto
+# Copiar o restante do projeto
 COPY . /app
 
-# Script wait-for-it
+# Copiar script wait-for-it (para uso com Docker Compose)
 COPY wait-for-it.sh /app/
 RUN chmod +x /app/wait-for-it.sh
 
 # Expor porta do Django
 EXPOSE 8000
 
-# Comando para rodar o servidor
-CMD ["./wait-for-it.sh", "db:5432", "--timeout=30", "--strict", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Variável padrão para usar SQLite (modo autônomo)
+ENV USE_SQLITE=true
+
+# Comando de inicialização:
+# - Se USE_SQLITE=true → roda direto com SQLite (modo autônomo)
+# - Se USE_SQLITE=false → espera o PostgreSQL (modo Compose)
+CMD ["sh", "-c", "\
+if [ \"$USE_SQLITE\" = \"true\" ]; then \
+    echo '✅ Executando com SQLite (modo autônomo)...'; \
+    python manage.py migrate && python manage.py runserver 0.0.0.0:8000; \
+else \
+    echo '⏳ Aguardando PostgreSQL (modo Compose)...'; \
+    ./wait-for-it.sh db:5432 --timeout=30 --strict -- \
+    python manage.py migrate && python manage.py runserver 0.0.0.0:8000; \
+fi"]
