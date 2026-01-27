@@ -1,13 +1,12 @@
 name: Django CI
 
 on:
-  push:
-    branches: ["main", "docker"]
   pull_request:
-    branches: ["main", "docker"]
+  push:
+    branches: [ main, master ]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,15 +19,18 @@ jobs:
           python-version: "3.12"
 
       - name: Instalar Poetry
-        run: pip install poetry
+        run: |
+          pip install poetry
+          poetry config virtualenvs.create false
 
       - name: Instalar dependências
-        run: poetry install --no-root
+        run: poetry install --no-interaction --no-ansi
 
-      - name: Rodar migrações (SQLite)
-        run: |
-          cp .env.example .env
-          python manage.py migrate
+      - name: Criar arquivo .env
+        run: cp .env.example .env
 
-      - name: Testar se o Django sobe
+      - name: Rodar migrations
+        run: python manage.py migrate
+
+      - name: Verificar Django
         run: python manage.py check
