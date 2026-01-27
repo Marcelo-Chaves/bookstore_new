@@ -1,0 +1,34 @@
+name: Django CI
+
+on:
+  push:
+    branches: ["main", "docker"]
+  pull_request:
+    branches: ["main", "docker"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar Poetry
+        run: pip install poetry
+
+      - name: Instalar dependências
+        run: poetry install --no-root
+
+      - name: Rodar migrações (SQLite)
+        run: |
+          cp .env.example .env
+          python manage.py migrate
+
+      - name: Testar se o Django sobe
+        run: python manage.py check
