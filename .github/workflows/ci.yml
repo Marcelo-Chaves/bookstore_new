@@ -1,34 +1,30 @@
-name: Django CI
-
-on:
-  push:
-    branches: ["main", "docker"]
-  pull_request:
-    branches: ["main", "docker"]
-
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout do código
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Configurar Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Instalar Poetry
-        run: pip install poetry
-
-      - name: Instalar dependências
-        run: poetry install --no-root
-
-      - name: Rodar migrações (SQLite)
+      - name: Install Poetry
         run: |
-          cp .env.example .env
-          python manage.py migrate
+          pip install poetry
 
-      - name: Testar se o Django sobe
-        run: python manage.py check
+      - name: Install dependencies
+        run: |
+          pip install poetry
+          poetry install --no-root
+
+      - name: Create env file
+        working-directory: .
+        run: cp .env.example .env
+
+      - name: Run migrations (SQLite)
+        working-directory: .
+        env:
+          USE_SQLITE: "true"
+        run: python manage.py migrate
