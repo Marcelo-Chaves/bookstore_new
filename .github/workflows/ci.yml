@@ -1,30 +1,42 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [ "main", "develop" ]
+
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout do código
+        uses: actions/checkout@v4
 
-      - name: Setup Python
+      - name: Configurar Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
-      - name: Install Poetry
+      - name: Instalar Poetry
         run: |
           pip install poetry
 
-      - name: Install dependencies
+      - name: Instalar dependências
         run: |
-          pip install poetry
           poetry install --no-root
 
-      - name: Create env file
-        working-directory: .
-        run: cp .env.example .env
+      - name: Criar .env para CI
+        run: |
+          echo "DEBUG=True" >> .env
+          echo "SECRET_KEY=ci-secret-key" >> .env
+          echo "USE_SQLITE=true" >> .env
+          echo "DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1" >> .env
 
-      - name: Run migrations (SQLite)
-        working-directory: .
-        env:
-          USE_SQLITE: "true"
-        run: python manage.py migrate
+      - name: Rodar check do Django
+        run: |
+          poetry run python manage.py check
+
+      - name: Rodar migrações (SQLite)
+        run: |
+          poetry run python manage.py migrate
