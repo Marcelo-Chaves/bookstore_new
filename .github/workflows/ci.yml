@@ -39,9 +39,18 @@ jobs:
           echo "DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1" >> .env
 
       - name: Django check
+        env:
+          DJANGO_SETTINGS_MODULE: book.settings
+          USE_SQLITE: "true"
+          DEBUG: "True"
         run: |
           poetry run python manage.py check
+      
 
       - name: Rodar migrações (SQLite)
+        env:
+          DJANGO_SETTINGS_MODULE: book.settings
+          USE_SQLITE: "true"
         run: |
           poetry run python manage.py migrate
+      
