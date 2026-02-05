@@ -27,8 +27,12 @@ jobs:
           echo "SECRET_KEY=ci-secret" >> .env
           echo "USE_SQLITE=true" >> .env
 
-      - name: Django check
+      - name: Run Django checks
+        env:
+          DJANGO_SETTINGS_MODULE: book.settings
+          USE_SQLITE: "True"
         run: poetry run python manage.py check
+
 
       - name: Migrate
         run: poetry run python manage.py migrate
