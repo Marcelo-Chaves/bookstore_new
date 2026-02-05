@@ -19,40 +19,59 @@ ALLOWED_HOSTS = os.getenv(
 ).split(",")
 
 # ===============================
+# Templates (⚠️ PRECISA vir antes do admin)
+# ===============================
+TEMPLATES = [
+    {
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+            ],
+        },
+    },
+]
+
+# ===============================
 # Apps
 # ===============================
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
 
     # Apps do projeto
-    'order',
-    'product',
+    "order",
+    "product",
 
     # DRF / Swagger
-    'rest_framework',
-    'drf_yasg',
+    "rest_framework",
+    "drf_yasg",
 ]
 
 # ===============================
 # Middleware
 # ===============================
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'book.urls'
-WSGI_APPLICATION = 'book.wsgi.application'
+ROOT_URLCONF = "book.urls"
+WSGI_APPLICATION = "book.wsgi.application"
 
 # ===============================
 # Banco de dados
@@ -69,7 +88,6 @@ if USE_SQLITE:
     }
 else:
     print("🗄️ Usando PostgreSQL (Docker Compose)")
-
     if os.getenv("DATABASE_URL"):
         DATABASES = {
             "default": dj_database_url.config(
@@ -98,20 +116,4 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # ===============================
 # Default
 # ===============================
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-TEMPLATES = [
-    {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
-            ],
-        },
-    },
-]
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
